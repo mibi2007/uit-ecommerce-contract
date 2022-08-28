@@ -3,7 +3,7 @@ use near_sdk::Timestamp;
 use crate::*;
 
 #[derive(BorshDeserialize, BorshSerialize, Deserialize, Serialize)]
-#[serde(crate= "near_sdk::serde")]
+#[serde(crate = "near_sdk::serde")]
 pub struct Order {
     pub order_id: OrderId,
     pub payer_id: AccountId,
@@ -11,5 +11,11 @@ pub struct Order {
     pub received_amount: Balance,
     pub is_completed: bool,
     pub is_refund: bool,
-    pub created_at: Timestamp
+    pub created_at: Timestamp,
+}
+
+impl Order {
+    pub fn refund(&mut self) {
+        self.is_refund = true;
+    }
 }

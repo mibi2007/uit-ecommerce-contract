@@ -82,21 +82,13 @@ impl EcommerceContract {
         let mut order = self.get_order(order_id);
 
         // Lay thong tin so NEAR deposit cua minh env::account_balance()
-        println!("Balance: {}", env::account_balance().to_string());
-        println!("Order amount: {}", order.amount.to_string());
-        println!(
-            "Order amount: {}",
-            (env::account_balance() - order.amount).to_string()
-        );
         assert!(
             env::account_balance() > order.amount,
             "ERROR_DEPOSIT_NOT_ENOUGH"
         );
 
-        println!("Pass assert");
         if env::account_balance() >= order.amount {
             order.refund();
-            println!("Order amount: {}", order.amount.to_string());
             self.orders.insert(&order.order_id, &order);
             Promise::new(env::current_account_id()).transfer(order.amount);
             PromiseOrValue::Value(order)
